@@ -24,11 +24,14 @@
 
 enum layers {
     BASE,  // default layer
+    WINDOWS,
     SYMB,  // symbols
     MDIA,  // media keys
     NUM, //numeric
     i3,
     WEB,
+
+    GAMER
 };
 
 #define W_UP LGUI(KC_UP)
@@ -53,15 +56,25 @@ enum layers {
 
 
 
+
 // clang-format off
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     [BASE] = LAYOUT_moonlander(
-        DB_TOGG,  KC_1,    KC_2,    KC_3,    KC_4,    KC_5,    KC_LEFT,           KC_RGHT, KC_6,    KC_7,    KC_8,    KC_9,    KC_0,    AS_RPT,
-        LT(MDIA, KC_DEL),  KC_Q,    KC_W,    KC_E,    KC_R,    KC_T,    TG(SYMB),         TG(SYMB), KC_Y,    KC_U,    KC_I,    KC_O,    KC_P,    CW_TOGG,
+        TG(GAMER),  KC_1,    KC_2,    KC_3,    KC_4,    KC_5,    KC_LEFT,           KC_RGHT, KC_6,    KC_7,    KC_8,    KC_9,    KC_0,    TG(WINDOWS),
+        LT(MDIA, KC_DEL),  KC_Q,    KC_W,    KC_E,    KC_R,    KC_T,    KC_MEH,         KC_MEH, KC_Y,    KC_U,    KC_I,    KC_O,    KC_P,    CW_TOGG,
         LT(i3, KC_ESCAPE), KC_A,    KC_S,    KC_D,    KC_F,    KC_G,    KC_HYPR,           KC_MEH,  KC_H,    KC_J,    KC_K,    KC_L,    LT(MDIA, KC_SCLN),CW_TOGG,
         KC_LSFT, LCTL_T(KC_Z),KC_X,KC_C,    KC_V,    KC_B,                                KC_N,    KC_M,    KC_COMM, KC_DOT,  RCTL_T(KC_SLSH), KC_RSFT,
         LT(WEB,KC_GRV),MO(WEB),A(KC_LSFT),KC_LEFT, KC_RGHT, AS_DOWN,    AS_UP,   KC_UP,   KC_DOWN, KC_LBRC, KC_RBRC, MO(SYMB),
                                            LT(NUM, KC_SPC),  KC_BSPC, DMENU,           KC_LALT,  LT(i3, KC_TAB),  LT(SYMB, KC_ENT)
+    ),
+
+    [WINDOWS] = LAYOUT_moonlander(
+        TG(GAMER),_______,_______, _______, _______, _______, _______,           _______, _______, _______,  _______,   _______,  _______,  TG(WINDOWS),
+        _______, _______, _______, _______, _______, _______, _______,           _______, _______, _______, _______,    _______, _______,  _______,
+        KC_ESCAPE, _______, _______, _______, MT(MOD_LALT, KC_F), _______, _______,           _______, _______, _______,  _______,  _______, _______,  _______,
+        _______, _______, _______, _______, _______, _______,                    _______, _______, _______,    _______, _______,  _______,
+        _______, _______, _______, _______, _______,         _______,            _______, _______, _______, _______, _______, _______,
+                                            _______, _______, KC_LGUI,            KC_APP, KC_TAB, _______
     ),
 
     [SYMB] = LAYOUT_moonlander(
@@ -109,6 +122,15 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
         _______, _______, _______, KC_BTN1, KC_BTN2,          _______,           _______,          _______, _______, _______, _______, _______,
                                             _______, _______, _______,           _______, _______, _______
     ),
+
+    [GAMER] = LAYOUT_moonlander(
+        TG(GAMER),_______,_______, _______, _______, _______, _______,           _______, _______, _______, _______, _______, _______, TG(WINDOWS),
+        _______, _______, KC_Q, KC_W,    KC_E, KC_R, KC_T,           _______, _______, LCTL(KC_W), LCTL(KC_L), LCTL(KC_T), _______, _______,
+        _______, _______, KC_A,    KC_S,    KC_D, _______, _______,              _______, _______, KC_WWW_BACK, KC_WWW_REFRESH, KC_WWW_FORWARD, _______, KC_MPLY,
+        _______, _______, KC_Z, KC_X, KC_C, KC_V,                             _______, _______, LCTL(LSFT(KC_I)), _______, _______, _______,
+        _______, _______, KC_COMM, KC_DOT, KC_SLASH,          _______,           _______,          _______, _______, _______, _______, _______,
+                                            KC_PGUP, KC_PGDN, _______,           _______, _______, _______
+    ),
 };
 
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
@@ -120,19 +142,20 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
 }
 
 
-/*bblayer_state_t layer_state_set_user(layer_state_t state) { */
+layer_state_t layer_state_set_user(layer_state_t state) {
 
-/*   switch(get_highest_layer(state)){ */
-/*       case BASE: */
-/*           autoshift_enable(); */
-/*           break; */
-/*         default: */
-/*             autoshift_disable(); */
-/*             break; */
-/*   } */
+   switch(get_highest_layer(state)){
+       case BASE:
+       case WINDOWS:
+           autoshift_enable();
+           break;
+         default:
+             autoshift_disable();
+             break;
+   }
 
-/*   return state; */
-/* }; */
+   return state;
+ };
 
 bool get_auto_shifted_key(uint16_t keycode, keyrecord_t *record) {
     switch (keycode) {
