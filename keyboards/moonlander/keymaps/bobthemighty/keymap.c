@@ -56,7 +56,6 @@ enum layers {
 
 
 
-
 // clang-format off
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     [BASE] = LAYOUT_moonlander(
@@ -125,11 +124,11 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
     [GAMER] = LAYOUT_moonlander(
         TG(GAMER),_______,_______, _______, _______, _______, _______,           _______, _______, _______, _______, _______, _______, TG(WINDOWS),
-        _______, _______, KC_Q, KC_W,    KC_E, KC_R, KC_T,           _______, _______, LCTL(KC_W), LCTL(KC_L), LCTL(KC_T), _______, _______,
-        _______, _______, KC_A,    KC_S,    KC_D, _______, _______,              _______, _______, KC_WWW_BACK, KC_WWW_REFRESH, KC_WWW_FORWARD, _______, KC_MPLY,
-        _______, _______, KC_Z, KC_X, KC_C, KC_V,                             _______, _______, LCTL(LSFT(KC_I)), _______, _______, _______,
+        _______, KC_TAB, KC_Q, KC_W,    KC_E, KC_R, KC_T,           _______, _______, _______, _______, _______, _______, _______,
+        _______, KC_LSFT, KC_A,    KC_S,    KC_D, _______, _______,              _______, _______, _______, _______, _______, _______, KC_MPLY,
+        _______, KC_LCTL, KC_Z, KC_X, KC_C, KC_V,                             _______, _______, _______, _______, _______, _______,
         _______, _______, KC_COMM, KC_DOT, KC_SLASH,          _______,           _______,          _______, _______, _______, _______, _______,
-                                            KC_PGUP, KC_PGDN, _______,           _______, _______, _______
+                                            KC_SPC, KC_PGUP, KC_PGDN,           _______, _______, _______
     ),
 };
 
@@ -141,23 +140,33 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
     return true;
 }
 
+void caps_word_set_user(bool active) {
+    ML_LED_1(active);
+}
+    
 
 layer_state_t layer_state_set_user(layer_state_t state) {
 
-   switch(get_highest_layer(state)){
-       case BASE:
-       case WINDOWS:
-           autoshift_enable();
-           break;
-         default:
-             autoshift_disable();
-             break;
-   }
+    bool LAYER_WINDOWS = IS_LAYER_ON_STATE(state, WINDOWS);
+    bool LAYER_GAMER = IS_LAYER_ON_STATE(state, GAMER);
+    bool LAYER_SYMB = IS_LAYER_ON_STATE(state, SYMB);
+    bool LAYER_NUM = IS_LAYER_ON_STATE(state, NUM);
+
+    ML_LED_6(LAYER_WINDOWS);
+    ML_LED_3(LAYER_GAMER);
+
+    ML_LED_2(LAYER_NUM);
+    ML_LED_5(LAYER_SYMB);
 
    return state;
  };
 
 bool get_auto_shifted_key(uint16_t keycode, keyrecord_t *record) {
+    uint8_t current_layer = get_highest_layer(layer_state);
+    if (current_layer > WINDOWS) {
+        return false;
+    }
+
     switch (keycode) {
     case KC_ENT:
         return false;
