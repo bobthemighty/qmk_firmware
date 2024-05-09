@@ -5,3 +5,5 @@ CAPS_WORD_ENABLE = yes
 CONSOLE_ENABLE = yes
 SPACE_CADET_ENABLE = no
 MOUSEKEY_ENABLE = yes
+
+SRC += features/sentence_case.c
