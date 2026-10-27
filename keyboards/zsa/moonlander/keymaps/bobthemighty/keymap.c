@@ -114,10 +114,11 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     ),
 
 
+    // WEB+H: Alt+G, Sidebery's tab search (bar opens while it runs). WEB+Y: Ctrl+Alt+G, reopen the bar if it was closed.
     [WEB] = LAYOUT_moonlander(
         LED_LEVEL,_______,_______, _______, _______, _______, _______,           _______, _______, _______, _______, _______, _______, QK_BOOT,
-        _______, _______, _______, MS_UP, _______, _______, _______,           _______, _______, LCTL(KC_W), LCTL(KC_L), LCTL(KC_T), _______, _______,
-        _______, _______, MS_LEFT, MS_DOWN, MS_RGHT, _______, _______,           _______, _______, KC_WWW_BACK, KC_WWW_REFRESH, KC_WWW_FORWARD, _______, KC_MPLY,
+        _______, _______, _______, MS_UP, _______, _______, _______,           _______, LCTL(LALT(KC_G)), LCTL(KC_W), LCTL(KC_L), LCTL(KC_T), _______, _______,
+        _______, _______, MS_LEFT, MS_DOWN, MS_RGHT, _______, _______,           _______, LALT(KC_G), KC_WWW_BACK, KC_WWW_REFRESH, KC_WWW_FORWARD, _______, KC_MPLY,
         _______, _______, _______, _______, _______, _______,                             _______, _______, LCTL(LSFT(KC_I)), _______, _______, _______,
         _______, _______, _______, MS_BTN1, MS_BTN2,          _______,           _______,          _______, _______, _______, _______, _______,
                                             _______, _______, _______,           _______, _______, _______
